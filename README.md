@@ -10,6 +10,10 @@ where it ended up two and a half weeks later, cleaned up and tested; the
 original, with the full commit history and every pull request, is
 [`jobben-2025/Speak2Me`](https://github.com/jobben-2025/Speak2Me).
 
+![Geopatra answering two questions, avatar animating in time with the voice](docs/media/demo.gif)
+
+*Unedited 15-second screen recording of the running program, produced by [`tools/record_demo.py`](tools/record_demo.py).*
+
 ---
 
 ## The problem
