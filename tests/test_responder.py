@@ -8,8 +8,8 @@ import re
 
 import pytest
 
-from speak2me.bot import Bot
-from speak2me.data import PATTERNS
+from geopatra.bot import Bot
+from geopatra.data import PATTERNS
 
 
 @pytest.fixture

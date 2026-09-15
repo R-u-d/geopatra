@@ -1,5 +1,5 @@
-from speak2me import countries
-from speak2me.data import COUNTRIES
+from geopatra import countries
+from geopatra.data import COUNTRIES
 
 SAMPLE = {
     "Peru": {"capital": "Lima", "currency": "Nuevo Sol", "language": "Spanish"},

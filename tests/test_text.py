@@ -1,6 +1,6 @@
 import pytest
 
-from speak2me import text
+from geopatra import text
 
 
 def test_normalize_strips_case_and_punctuation():

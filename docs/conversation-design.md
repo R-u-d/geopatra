@@ -2,7 +2,7 @@
 
 How to change what the bot says without touching application code.
 
-Everything the bot knows lives in [`src/speak2me/data.py`](../src/speak2me/data.py):
+Everything the bot knows lives in [`src/geopatra/data.py`](../src/geopatra/data.py):
 195 countries, 25 patterns, 40 response templates, 3 fallbacks. No logic.
 
 ---
@@ -93,7 +93,7 @@ app. A test fails if any template names a callback that does not exist, so a
 typo is caught before a demo rather than during one.
 
 Adding a new placeholder means one method on `Actions` and one line in
-`Actions.callbacks()` — [`actions.py`](../src/speak2me/actions.py).
+`Actions.callbacks()` — [`actions.py`](../src/geopatra/actions.py).
 
 ---
 
@@ -101,7 +101,7 @@ Adding a new placeholder means one method on `Actions` and one line in
 
 The bot is written as a slightly smug machine that is nonetheless kind to the
 person typing. That applies to the pattern responses and to the prompt sent to
-the language model, which is in [`llm.py`](../src/speak2me/llm.py). Two
+the language model, which is in [`llm.py`](../src/geopatra/llm.py). Two
 constraints on anything written for it:
 
 - **No emoji, no markdown, no bullet lists.** Every response is read aloud by a

@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from speak2me.bot import Bot
+from geopatra.bot import Bot
 
 SPEC = Path(__file__).resolve().parents[1] / "docs" / "keywords-original.txt"
 

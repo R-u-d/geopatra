@@ -1,13 +1,14 @@
-# Speak2Me
+# Geopatra
 
 A desktop chatbot that speaks its answers and animates an avatar in time with
 its own voice. Python, Tkinter, no game engine and no web stack.
 
-Originally a one-week group project at WBS Coding School; the brief was "a
-chatbot in Python, at least ten keywords and two extra features". This
-repository is what it turned into over the following two weeks, cleaned up and
-tested. The original repository, with the full commit history and every pull
-request, is [`jobben-2025/Speak2Me`](https://github.com/jobben-2025/Speak2Me).
+Started as **Speak2Me**, a one-week group project at WBS Coding School — the
+brief was "a chatbot in Python, at least ten keywords and two extra features".
+Geopatra is the name it got once it had a face and a voice. This repository is
+where it ended up two and a half weeks later, cleaned up and tested; the
+original, with the full commit history and every pull request, is
+[`jobben-2025/Speak2Me`](https://github.com/jobben-2025/Speak2Me).
 
 ---
 
@@ -40,14 +41,14 @@ every 50 ms. The *edge* of `engine.isBusy()` — not its value — is turned int
 Tk virtual event (`<<speaking>>` / `<<silent>>`). The animator listens for those
 events. Nothing estimates how long a sentence takes; the avatar reacts to the
 voice actually starting and stopping.
-→ [`tts.py`](src/speak2me/tts.py), [`avatar.py`](src/speak2me/avatar.py)
+→ [`tts.py`](src/geopatra/tts.py), [`avatar.py`](src/geopatra/avatar.py)
 
 **Play clips ping-pong and only swap at a boundary.**
 The avatar is 25 short MP4 clips, decoded once into Tk images. Each clip plays
 forwards then backwards (`BounceCycle`), so a two-second clip loops forever with
 no visible cut. A clip is only exchanged when the bounce returns to frame one,
 which is why switching moods never looks like a dropped frame.
-→ [`avatar.py`](src/speak2me/avatar.py), tested in
+→ [`avatar.py`](src/geopatra/avatar.py), tested in
 [`test_bounce_cycle.py`](tests/test_bounce_cycle.py)
 
 **Make responses templates with callbacks, not strings.**
@@ -56,27 +57,27 @@ placeholder name is looked up in a callback map and resolved on first use, with
 the regex match handed to the callback — which is how "weather in Lisbon" gets
 *Lisbon* to the weather call without parsing the sentence twice. That is also
 how a response can clear the transcript or close the window.
-→ [`text.render`](src/speak2me/text.py), [`actions.py`](src/speak2me/actions.py)
+→ [`text.render`](src/geopatra/text.py), [`actions.py`](src/geopatra/actions.py)
 
 **One rule for the dispatcher: `None` means "not mine".**
 Routes are tried from most specific to least. A route that has nothing to say
 returns `None` and the chain continues. An empty string is a *valid* answer and
 stops the chain — that is how `{clear}` acts and deliberately prints nothing.
 Order: forced prefix → country → pattern table → bare arithmetic → default.
-→ [`responder.py`](src/speak2me/responder.py)
+→ [`responder.py`](src/geopatra/responder.py)
 
 **Keep the language model optional and off the critical path.**
 The LLM answers only when the user prefixes a line with `?`, and only if
 `HF_TOKEN` is set. Everything else works with no token and no network. A model
 reply is rendered through the same placeholder mechanism, but with only the two
 avatar-mood placeholders offered — a model must not be able to reach `{quit}`.
-→ [`llm.py`](src/speak2me/llm.py)
+→ [`llm.py`](src/geopatra/llm.py)
 
 **Split the logic away from the window.**
 `text`, `countries`, `responder`, `actions`, `weather`, `llm` and `github`
 import no Tkinter, no OpenCV and no audio. The GUI passes itself in as a host
 object. That is what makes 84 tests possible without opening a window.
-→ [`bot.py`](src/speak2me/bot.py)
+→ [`bot.py`](src/geopatra/bot.py)
 
 ### Documentation
 
@@ -107,13 +108,13 @@ What this repository is **not**: it is not the original history. See
 ## Run it
 
 ```bash
-git clone https://github.com/R-u-d/speak2me && cd speak2me
+git clone https://github.com/R-u-d/geopatra && cd geopatra
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e .                       # or: pip install -r requirements.txt
 
-speak2me                               # the window, with voice and avatar
-speak2me --terminal                    # response layer only, no audio, no window
-speak2me --help
+geopatra                               # the window, with voice and avatar
+geopatra --terminal                    # response layer only, no audio, no window
+geopatra --help
 ```
 
 Run it from a clone — the 19 MB of avatar clips live in the repository, not in
@@ -126,7 +127,7 @@ Optional language model:
 
 ```bash
 export HF_TOKEN=hf_...                 # Hugging Face inference token
-speak2me
+geopatra
 ```
 
 Then prefix a line with `?` to route it to the model.

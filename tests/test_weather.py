@@ -3,7 +3,7 @@ numbers into something a synthetic voice can read out."""
 
 import pytest
 
-from speak2me import weather
+from geopatra import weather
 
 
 @pytest.mark.parametrize(

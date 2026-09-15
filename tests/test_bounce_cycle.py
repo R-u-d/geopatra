@@ -5,7 +5,7 @@ It lives in its own module so this runs without a display; see cycle.py."""
 
 import pytest
 
-from speak2me.cycle import BounceCycle
+from geopatra.cycle import BounceCycle
 
 
 def test_ping_pong_order_without_repeating_the_endpoints():
