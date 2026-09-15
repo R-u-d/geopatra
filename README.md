@@ -180,7 +180,7 @@ decisions, and are defended in `docs/decisions.md`.
 
 **What changed against the original**, all of it verifiable by diffing against
 upstream — see [`docs/cleanup.md`](docs/cleanup.md):
-a hardcoded API token removed, a vendored copy of Pillow and 22 abandoned
+a hardcoded API token removed, a vendored copy of Pillow and 21 abandoned
 iteration files deleted, the response logic separated from the GUI, eight
 correctness bugs fixed, code execution turned off by default, and 84 tests
 added where there were none.

@@ -18,24 +18,25 @@ is rotating it at the provider, which is a separate action and not something a
 ## 2. The repository shipped its own dependencies
 
 A full copy of Pillow, including compiled `.dylib` files, was committed at the
-top level, along with `__pycache__` and `.DS_Store`. The checkout was 59 MB for
-roughly 3,000 lines of code.
+top level, along with `__pycache__` and `.DS_Store`. The checkout was 59 MB, of
+which 19 MB is avatar clips, 19 MB is Pillow and the rest is build output.
 
-Here: a pinned `requirements.txt`, a `.gitignore`, and a 19 MB checkout that is
+Here: a pinned `requirements.txt`, a `.gitignore`, and a 20 MB checkout that is
 almost entirely the avatar clips.
 
-## 3. Twenty-two abandoned iterations were in the tree
+## 3. Twenty-one abandoned iterations were in the tree
 
-`dump/` held `chatbot2.py` through `chatbot13_gtts.py`, three GUI experiments
-and several scratch files — about 9,000 lines that nothing imported. They are
-part of how the project was built, which is why the original repository keeps
-them; they are not part of the project, which is why this one does not.
+`dump/` held `chatbot.py` through `chatbot13_gtts.py`, three GUI experiments
+and several scratch files: 21 Python files, 10,856 lines, none of them imported
+by anything. They are part of how the project was built, which is why the
+original repository keeps them; they are not part of the project, which is why
+this one does not.
 
 ## 4. The logic could not be tested
 
-`geopatra_exe.py` was a single 1,600-line file. Importing any part of the
-response logic meant importing Tkinter, OpenCV and a TTS engine, so there were
-no tests.
+`geopatra_exe.py` was a single 1,601-line file, and the three top-level modules
+came to 2,965 lines. Importing any part of the response logic meant importing
+Tkinter, OpenCV and a TTS engine, so there were no tests.
 
 Split here into modules that import none of those (`text`, `countries`,
 `responder`, `actions`, `weather`, `llm`, `github`) and modules that do

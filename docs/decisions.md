@@ -22,7 +22,10 @@ number that would need tuning is a number that changes on the next machine.
 
 **Rejected: `runAndWait()` on a worker thread.** Blocks until the utterance ends,
 which gives an exact end time — but then the animation has to be driven from
-that thread, and Tk widgets may only be touched from the main thread.
+that thread, and Tk widgets may only be touched from the main thread. Both this
+and the plain blocking call are still in the original source as commented-out
+lines (`geopatra_exe.py:933`, `:935`, `:941`); they were tried and abandoned
+before the polled approach at `:823`.
 
 **Chosen.** Run the engine in non-blocking mode (`startLoop(False)`), call
 `iterate()` from a 50 ms Tk `after()` poll, and watch `isBusy()` for an *edge*.
@@ -70,19 +73,21 @@ by-product.
 
 ## 3. The language model is a route, not the engine
 
-**Problem.** The bot was going to be demonstrated live, on venue wifi.
+*The structure below is the original's. The reasoning is reconstructed after
+the fact — there is no record of it being argued at the time, only of it being
+built this way.*
 
-**Rejected: route everything through a model.** One network failure and there
-is no demo. It also makes the rule-based work — the pattern table, the country
-data, the dispatcher — invisible, which was most of the assignment.
+**What was built.** The model was added last, on top of a rule-based stack that
+was already complete, and it is reachable only by prefixing a line with `?`.
+Every other route works with no token and no network.
 
-**Chosen.** The model answers only when a line starts with `?`, and only if
-`HF_TOKEN` is set. Without a token the route replies that no model is
-configured; every other route is unaffected. The bot is fully functional with
-the network unplugged.
+**Why that holds up.** Routing everything through a model would have made the
+pattern table, the country data and the dispatcher invisible — which was most
+of the assignment. It would also have put a live demo at the mercy of the
+venue's wifi. Keeping the model as one route among several avoids both.
 
 **Cost.** The impressive answers need an explicit prefix. In a demo that is
-fine — it makes the difference between the two layers visible on purpose.
+arguably a feature: it makes the boundary between the two layers visible.
 
 **Security note.** A model reply is rendered through the same placeholder
 mechanism, because the prompt asks the model to emit `{joke}` or `{rap}` to
