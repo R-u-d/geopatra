@@ -1,0 +1,93 @@
+### Questions regarding the dictionary ###
+
+## Questions asking for details in a country ##
+
+What is the capital city of Japan?
+Can you tell me the currency used in France?
+Which language is primarily spoken in Brazil?
+Do you know the capital of Australia?
+What currency do people use in India?
+Name the main language spoken in Egypt.
+What is the capital city of Canada?
+Which currency is used in South Africa?
+In Germany, what is the official language?
+Could you tell me the capital of Mexico?
+What language do most people speak in Russia?
+What is the currency of Italy?
+Name the capital city of Argentina.
+
+
+## Questions asking for the country of a detail ##
+
+Which country has Tokyo as its capital city?
+Can you tell me which country uses the Euro as its currency?
+In which country is Portuguese the primary language?
+Which country has Canberra as its capital?
+What country uses the Indian Rupee as its currency?
+Name a country where Arabic is the main language.
+Which country has Ottawa as its capital city?
+In which country is the Rand the official currency?
+Which country recognizes German as its official language?
+Name the country whose capital is Mexico City.
+Which country has Moscow as its capital and Russian as its official language?
+In which country is the Euro used as the official currency?
+Name a country with Buenos Aires as its capital city.
+
+
+## Possible answers phrasing ##
+
+Qs from lines 8-13:
+Yes, the capital of Australia is Canberra.
+The currency used in India is the Indian Rupee (INR).
+The main language spoken in Egypt is Arabic.
+The capital city of Canada is Ottawa.
+The currency used in South Africa is the South African Rand (ZAR).
+In Germany, the official language is German.
+
+Qs from lines 29-34:
+The Rand is the official currency of South Africa.
+Germany designates German as its official language.
+Mexico City serves as the capital of Mexico.
+Moscow is the capital city of Russia, where Russian is the official language.
+The Euro is the official currency in countries within the Eurozone, such as France, Germany, and Italy.
+Argentina is the country where Buenos Aires functions as the capital city.
+
+
+# Keyword selection in code #
+
+keyword 99% == search value (single word use)
+country/countries OR capital OR currency OR language
+------------------------------------------------------------------------------------
+example:
+What is the currency of Italy?
+
+keyword: currency, finds capital keyword => currency == searchword
+	check if one of the found key-strings (currency) is part of country:
+	if yes, then lookup currency match
+	if no, then check if it is in capital - answer country then
+------------------------------------------------------------------------------------
+
+
+keyword 50% == search value (double word use)
+country/countries AND capital OR currency OR language
+
+------------------------------------------------------------------------------------
+Which country has Canberra as its capital?
+
+keyword: capital, lookup finds capital keyword => capital == searchword
+	check  if sentence contains  either country (Australia) or capital (Canberra)
+		if supplied sentence contains capital (Canberra), then return country
+		elif it contains country (Australia), then return capital
+------------------------------------------------------------------------------------
+
+
+keyword 30% == search value (double word use, identify 3 keywords through lookup)
+country/countries AND language OR capital AND currency OR language AND currency
+------------------------------------------------------------------------------------
+In which country do they speak Serbian and pay with Euro?       (Kosovo)
+
+keyword: country, lookup will find language+currency from sentence   => country == searchword
+	check  if sentence contains  either country (Australia) or capital (Canberra)
+		if supplied sentence contains capital (Canberra), then return country
+		elif it contains country (Australia), then return capital
+------------------------------------------------------------------------------------

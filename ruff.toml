@@ -1,0 +1,9 @@
+line-length = 100
+target-version = "py311"
+
+[lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4"]
+
+[lint.per-file-ignores]
+# The data module is one large literal; long lines there are the data itself.
+"src/speak2me/data.py" = ["E501", "W291", "W293"]
