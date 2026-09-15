@@ -11,8 +11,8 @@ The Hugging Face token was written into the code as a string literal, on a
 public repository. It has been removed here and is read from `HF_TOKEN` instead.
 
 Removing it from this repository does not make the leaked token safe — it stays
-reachable through the old commit on the original repository. The only real fix
-is rotating it at the provider.
+reachable through the old commit on the original repository. The token was
+revoked at Hugging Face, which is what actually settles it.
 
 ## 2. The repository shipped its own dependencies
 

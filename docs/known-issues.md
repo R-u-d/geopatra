@@ -89,10 +89,3 @@ called it; the dependency is gone. Input is typed.
 Tested on macOS. `pyttsx3` on Linux needs `espeak`/`espeak-ng` installed, and
 the voice will sound different. Nobody has run it there.
 
----
-
-## The leaked token is still leaked
-
-The Hugging Face token that used to be in the source is removed here, but it
-remains reachable through the old commit in the upstream repository. Only
-rotating it at the provider fixes that. See `cleanup.md`.
