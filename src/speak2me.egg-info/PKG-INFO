@@ -1,3 +1,24 @@
+Metadata-Version: 2.4
+Name: speak2me
+Version: 1.0.0
+Summary: A chatbot that speaks its answers and animates an avatar in time with its own voice
+Author: Benjamin Becht
+Author-email: "R. Hildermann" <r.hildermann@outlook.de>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/R-u-d/speak2me
+Project-URL: Original, https://github.com/jobben-2025/Speak2Me
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: opencv-python-headless>=4.10
+Requires-Dist: pillow>=11
+Requires-Dist: pyttsx3>=2.90
+Requires-Dist: requests>=2.32
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: ruff>=0.14; extra == "dev"
+Dynamic: license-file
+
 # Speak2Me
 
 A desktop chatbot that speaks its answers and animates an avatar in time with
@@ -107,17 +128,11 @@ What this repository is **not**: it is not the original history. See
 ## Run it
 
 ```bash
-git clone https://github.com/R-u-d/speak2me && cd speak2me
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e .                       # or: pip install -r requirements.txt
-
-speak2me                               # the window, with voice and avatar
-speak2me --terminal                    # response layer only, no audio, no window
-speak2me --help
+pip install -r requirements.txt
+python -m speak2me.app                 # the window, with voice and avatar
+python -m speak2me.app --terminal      # response layer only, no audio, no window
 ```
-
-Run it from a clone — the 19 MB of avatar clips live in the repository, not in
-the installed package.
 
 The window takes a few seconds to reach full speed — the remaining clips decode
 on a background thread while the first one is already on screen.
@@ -126,7 +141,7 @@ Optional language model:
 
 ```bash
 export HF_TOKEN=hf_...                 # Hugging Face inference token
-speak2me
+python -m speak2me.app
 ```
 
 Then prefix a line with `?` to route it to the model.
@@ -151,13 +166,10 @@ Then prefix a line with `?` to route it to the model.
 ### Development
 
 ```bash
-pip install -e ".[dev]"     # or: pip install -r requirements-dev.txt for pinned versions
-pytest                      # 84 tests, no network, no window, under a second
+pip install -r requirements-dev.txt
+pytest          # 84 tests, no network, no window
 ruff check .
 ```
-
-CI runs both on every push, on Linux with no display — which only works because
-nothing in the tested modules imports a GUI.
 
 ## Provenance
 

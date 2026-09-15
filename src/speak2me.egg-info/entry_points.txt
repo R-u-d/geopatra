@@ -1,0 +1,2 @@
+[console_scripts]
+speak2me = speak2me.app:main

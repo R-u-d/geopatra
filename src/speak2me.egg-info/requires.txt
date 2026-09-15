@@ -1,0 +1,8 @@
+opencv-python-headless>=4.10
+pillow>=11
+pyttsx3>=2.90
+requests>=2.32
+
+[dev]
+pytest>=8
+ruff>=0.14
