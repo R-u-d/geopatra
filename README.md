@@ -160,6 +160,17 @@ ruff check .
 CI runs both on every push, on Linux with no display — which only works because
 nothing in the tested modules imports a GUI.
 
+The demo GIF at the top is a recording of the real application, produced by
+[`tools/record_demo.py`](tools/record_demo.py): it opens the window at a fixed
+position, waits for the clips to decode, types a scripted conversation into the
+actual entry widget and records the window rectangle. Regenerate it after a UI
+change rather than letting it go stale. Needs `ffmpeg` and, on macOS, Screen
+Recording permission for the terminal.
+
+```bash
+python tools/record_demo.py
+```
+
 ## Provenance
 
 This is a clean import, not a rewritten history. The code here is the final
