@@ -18,7 +18,7 @@ are joined with `_` and rendered as a list at output time, so
 ```
 
 **`PATTERNS`** — a regex mapped to a list of possible answers. One is picked at
-random, which is what stops the bot sounding like a vending machine.
+random, so the same question twice does not give the same answer twice.
 
 ```python
 r'\b(?:hello|hi|hey)\b': [
@@ -40,7 +40,7 @@ wrapped:
 r'\b(?:hello|hi|hey)\b'
 ```
 
-This was a real bug — "what is software" used to return an opinion about war.
+This was a real bug: "what is software" returned an opinion about war.
 
 **Order matters.** First match wins, top to bottom. Specific patterns go above
 general ones. A test fails if a keyword pattern is completely shadowed by an
@@ -89,8 +89,7 @@ A placeholder can be the whole response (`'{meteo}'`), or sit inside a sentence
 (`'{clear} Chat cleared.'`).
 
 An unknown name renders as `<name?>` in the chat window instead of crashing the
-app. A test fails if any template names a callback that does not exist, so a
-typo is caught before a demo rather than during one.
+app. A test fails if any template names a callback that does not exist.
 
 Adding a new placeholder means one method on `Actions` and one line in
 `Actions.callbacks()` — [`actions.py`](../src/geopatra/actions.py).
@@ -106,8 +105,8 @@ constraints on anything written for it:
 
 - **No emoji, no markdown, no bullet lists.** Every response is read aloud by a
   speech engine, which pronounces them.
-- **Short by default.** A paragraph that scrolls is a paragraph the user waits
-  through.
+- **Short by default.** Everything is read aloud, so a long paragraph is a long
+  wait.
 
 ---
 

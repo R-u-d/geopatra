@@ -18,8 +18,8 @@ original, with the full commit history and every pull request, is
 
 ## The problem
 
-A keyword chatbot is a solved exercise and a boring demo. Ours had to hold a
-room for five minutes, which turned a toy assignment into three real problems:
+A keyword chatbot is a solved exercise. Ours had to hold a room for five
+minutes, which turned the assignment into three problems:
 
 **1. It had to talk, and look like it was talking.**
 Text-to-speech is easy. Making an avatar move *with* the voice is not, because
@@ -28,9 +28,9 @@ the voice, and the platform. Any timer-based approach drifts within one
 sentence.
 
 **2. It could not depend on a language model.**
-A live demo over conference wifi that calls a hosted model is a demo that fails
-in front of an audience. The bot had to give good answers with the network
-unplugged, and use a model only as a bonus route.
+A live demo that calls a hosted model over venue wifi fails in front of an
+audience. The bot had to give good answers with the network unplugged, and use a
+model only as a bonus route.
 
 **3. Every answer had to be able to *do* something.**
 "What time is it" cannot be answered from a fixed string. Neither can "weather
@@ -51,7 +51,7 @@ voice actually starting and stopping.
 The avatar is 25 short MP4 clips, decoded once into Tk images. Each clip plays
 forwards then backwards (`BounceCycle`), so a two-second clip loops forever with
 no visible cut. A clip is only exchanged when the bounce returns to frame one,
-which is why switching moods never looks like a dropped frame.
+so switching moods never looks like a dropped frame.
 → [`avatar.py`](src/geopatra/avatar.py), tested in
 [`test_bounce_cycle.py`](tests/test_bounce_cycle.py)
 
@@ -80,7 +80,8 @@ avatar-mood placeholders offered — a model must not be able to reach `{quit}`.
 **Split the logic away from the window.**
 `text`, `countries`, `responder`, `actions`, `weather`, `llm` and `github`
 import no Tkinter, no OpenCV and no audio. The GUI passes itself in as a host
-object. That is what makes 84 tests possible without opening a window.
+object, which is what lets the response layer be tested without opening a
+window.
 → [`bot.py`](src/geopatra/bot.py)
 
 ### Documentation
@@ -99,7 +100,7 @@ Working and demonstrated. Not maintained as a product.
 
 | | |
 |:--|:--|
-| Application code | 1,495 lines across 13 modules |
+| Application code | 13 modules |
 | Conversation data | 195 countries, 25 patterns, 40 response templates |
 | Avatar | 25 clips, 11 loaded at startup |
 | Tests | 84, no display and no network |
@@ -121,8 +122,8 @@ geopatra --terminal                    # response layer only, no audio, no windo
 geopatra --help
 ```
 
-Run it from a clone — the 19 MB of avatar clips live in the repository, not in
-the installed package.
+Run it from a clone — the avatar clips live in the repository, not in the
+installed package.
 
 The window takes a few seconds to reach full speed — the remaining clips decode
 on a background thread while the first one is already on screen.
@@ -161,14 +162,13 @@ pytest                      # 84 tests, no network, no window, under a second
 ruff check .
 ```
 
-CI runs both on every push, on Linux with no display — which only works because
-nothing in the tested modules imports a GUI.
+CI runs both on every push, on Linux with no display.
 
 The demo GIF at the top is a recording of the real application, produced by
 [`tools/record_demo.py`](tools/record_demo.py): it opens the window at a fixed
 position, waits for the clips to decode, types a scripted conversation into the
 actual entry widget and records the window rectangle. Regenerate it after a UI
-change rather than letting it go stale. Needs `ffmpeg` and, on macOS, Screen
+change. Needs `ffmpeg` and, on macOS, Screen
 Recording permission for the terminal.
 
 ```bash
@@ -192,7 +192,7 @@ still visible in the upstream pull requests.
 assistance. The avatar clips in `assets/geopatra/` are AI-generated video
 (MiniMax / Hailuo). The conversation data, the dispatcher design, the
 placeholder-callback mechanism and the voice-synchronised animation were our
-decisions, and are defended in `docs/decisions.md`.
+decisions, and are written up in `docs/decisions.md`.
 
 **What changed against the original**, all of it verifiable by diffing against
 upstream — see [`docs/cleanup.md`](docs/cleanup.md):

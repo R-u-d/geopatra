@@ -88,8 +88,8 @@ sequenceDiagram
     V->>V: back to an idle clip
 ```
 
-The two dashed arrows are the part worth looking at. The avatar is never told
-how long to animate; it is told *that the voice started* and *that it stopped*.
+The two dashed arrows are the synchronisation. The avatar is never told how long
+to animate, only that the voice started and that it stopped.
 
 ---
 
@@ -121,7 +121,7 @@ The metadata carries the winning route name. Tests assert on that rather than
 on the sentence, because most responses are a random choice from a list and are
 allowed to change.
 
-### Order is a decision, not an accident
+### Why the pattern table runs before the country layer
 
 The pattern table runs **before** the country layer. The original had it the
 other way round, which meant "weather in Lisbon" was answered with facts about
@@ -151,9 +151,9 @@ r'\b(?:clear chat|wipe screen|clear)\b':   ['{clear} Chat cleared. …']
 `text.render` walks the template through a dict subclass whose `__missing__`
 looks the name up in a callback map, calls it with the match context, and caches
 the result so a name used twice is resolved once. An unknown name renders as
-`<name?>` instead of raising — a typo in the data file then shows up in the chat
-window rather than taking the app down mid-demo. A test asserts that no template
-currently contains an unmapped name.
+`<name?>` instead of raising, so a typo in the data file shows up in the chat
+window instead of taking the app down. A test asserts that no template currently
+contains an unmapped name.
 
 Because the callback receives the regex match, a placeholder can read what the
 user actually said. `{meteo}` is one line in the data file and still gets the
@@ -167,16 +167,16 @@ city name.
 synchronously so there is something on screen immediately; the rest decode on a
 worker thread. Decoding happens off the main thread, but the `ImageTk` objects
 are constructed back on it via `root.after(0, …)`. Tk is not thread-safe; the
-original built them in the worker and got away with it.
+original built them in the worker.
 
-Clip names are the state machine. `classify()` sorts them by substring:
+The mood is read off the filename. `classify()` sorts clips by substring:
 anything containing `idle` is an idle clip, anything containing `neutral`,
 `funny` or `rap` is a talking clip. Adding a mood means dropping a file in the
 folder and naming it.
 
 Playback is a 30 fps `after()` loop. Each clip is a `BounceCycle` — forwards,
 then backwards, counting round trips. A new clip is only chosen at a completed
-round trip, which is why mood switches land cleanly instead of jumping.
+round trip, so mood switches land cleanly instead of jumping.
 
 The mood queue is how a response reaches the avatar: `{joke}` in a template
 calls `Actions.mood`, which calls `Host.queue_mood("funny_v1")`, which the

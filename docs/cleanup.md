@@ -12,8 +12,7 @@ public repository. It has been removed here and is read from `HF_TOKEN` instead.
 
 Removing it from this repository does not make the leaked token safe — it stays
 reachable through the old commit on the original repository. The only real fix
-is rotating it at the provider, which is a separate action and not something a
-`.gitignore` can do for you.
+is rotating it at the provider.
 
 ## 2. The repository shipped its own dependencies
 
@@ -28,9 +27,8 @@ almost entirely the avatar clips.
 
 `dump/` held `chatbot.py` through `chatbot13_gtts.py`, three GUI experiments
 and several scratch files: 21 Python files, 10,856 lines, none of them imported
-by anything. They are part of how the project was built, which is why the
-original repository keeps them; they are not part of the project, which is why
-this one does not.
+by anything. They are part of how the project was built and stay in the original
+repository; they are not part of the project and are not here.
 
 ## 4. The logic could not be tested
 
@@ -48,7 +46,7 @@ tests run with no window and no network, in CI on Linux with no display.
 | | Found in | Effect |
 |:--|:--|:--|
 | 1 | Keyword patterns had no word boundaries | `hi` matched *somet**hi**ng*; `war` matched *soft**war**e*, so "what is software" was answered with an opinion about war. Every bare keyword pattern is now `\b(?:…)\b`. |
-| 2 | OpenCV frames fed to PIL unconverted | BGR read as RGB — red and blue swapped on every frame. Invisible on this near-monochrome footage (about eight levels of mean difference), wrong nonetheless. |
+| 2 | OpenCV frames fed to PIL unconverted | BGR read as RGB — red and blue swapped on every frame. Barely visible on this near-monochrome footage, wrong nonetheless. |
 | 3 | GitHub content lookup used a module-level `last_owner` that was never updated | "content of *X*" always queried one hardcoded account, whatever repository was asked about. |
 | 4 | Two placeholder callbacks read module globals (`bot`, `app`) instead of their own attributes | Worked only because `__main__` happened to define those names. Any other entry point — including a test — raised `NameError`. |
 | 5 | `{rap}` pointed at a neutral clip, and the rap clips were never loaded | The rap response played the ordinary talking animation. |

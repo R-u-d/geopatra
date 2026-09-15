@@ -4,9 +4,8 @@ Six that shaped the project, with what they cost and what was rejected.
 
 **1–4 were taken during the project**, in September 2025, and are visible in the
 original code. **5 and 6 were taken during this cleanup** and are marked as such;
-they change behaviour the original had, and pretending otherwise would be
-dishonest. Where something was never properly weighed at all, the last section
-says so rather than inventing a rationale after the fact.
+they change behaviour the original had. Where something was never properly
+weighed at all, the last section says so.
 
 ---
 
@@ -17,8 +16,8 @@ The duration of an utterance is not known before it is spoken — it depends on
 the text, the selected voice and the platform's speech engine.
 
 **Rejected: estimate the duration.** Words times a rate constant, animate for
-that long. Cheap, and wrong by a visible margin on the second sentence. Every
-number that would need tuning is a number that changes on the next machine.
+that long. Cheap, and wrong by a visible margin on the second sentence. The rate
+constant would need retuning on every machine.
 
 **Rejected: `runAndWait()` on a worker thread.** Blocks until the utterance ends,
 which gives an exact end time — but then the animation has to be driven from
@@ -32,12 +31,11 @@ before the polled approach at `:823`.
 A rising edge emits the Tk virtual event `<<speaking>>`, a falling edge
 `<<silent>>`. The animator binds those.
 
-**Cost.** Up to 50 ms of latency on each transition, well below a syllable and
-not perceptible. The poll runs forever while the app is open.
+**Cost.** Up to 50 ms of latency on each transition. The poll runs for as long as
+the app is open.
 
-**Why it was worth it.** The synchronisation is exact by construction rather
-than by calibration, and it stays exact on a machine we have never seen — which
-matters when the demo runs on someone else's laptop.
+**Result.** Nothing to calibrate, and the same behaviour on a machine we have
+never run it on.
 
 ---
 
@@ -62,32 +60,30 @@ at render time. Mitigated two ways: an unknown name renders as `<name?>` instead
 of raising, and a test fails if any template in the data file names a callback
 that does not exist.
 
-**Consequence nobody planned.** Because a callback runs for its side effect as
-much as its return value, a response can *act*: `{clear}` wipes the transcript,
-`{quit}` closes the window, `{joke}` switches the avatar's mood. The
-conversation designer can trigger application behaviour without writing code.
-That turned out to be the most useful property of the design and it was a
+**Not planned.** Because a callback runs for its side effect as much as its
+return value, a response can *act*: `{clear}` wipes the transcript, `{quit}`
+closes the window, `{joke}` switches the avatar's mood. The conversation
+designer can trigger application behaviour without writing code. That was a
 by-product.
 
 ---
 
 ## 3. The language model is a route, not the engine
 
-*The structure below is the original's. The reasoning is reconstructed after
-the fact — there is no record of it being argued at the time, only of it being
-built this way.*
+*The structure is the original's. The reasoning is reconstructed — there is no
+record of it being argued at the time.*
 
 **What was built.** The model was added last, on top of a rule-based stack that
 was already complete, and it is reachable only by prefixing a line with `?`.
 Every other route works with no token and no network.
 
-**Why that holds up.** Routing everything through a model would have made the
+**Effect.** Routing everything through a model would have made the
 pattern table, the country data and the dispatcher invisible — which was most
 of the assignment. It would also have put a live demo at the mercy of the
 venue's wifi. Keeping the model as one route among several avoids both.
 
-**Cost.** The impressive answers need an explicit prefix. In a demo that is
-arguably a feature: it makes the boundary between the two layers visible.
+**Cost.** The model answers need an explicit prefix, which also keeps the
+boundary between the two layers visible.
 
 **Security note.** A model reply is rendered through the same placeholder
 mechanism, because the prompt asks the model to emit `{joke}` or `{rap}` to
@@ -117,11 +113,11 @@ Two more details were added during the cleanup, after tests were written for
 cases the original got wrong:
 
 - **Longest match wins.** `Niger` is a substring of `Nigeria`, and `Africa` of
-  `South Africa`. Scanning for the longest name is the whole fix.
+  `South Africa`. The fix is to scan for the longest name first.
 - **Whole-token matching.** Names are matched as tokens, not substrings, so
   `Chad` is not found inside `Chadwick`.
 
-**Cost, accepted knowingly.** The layer still answers any sentence containing a
+**Cost.** The layer still answers any sentence containing a
 country name, whatever the sentence was about: "do you like China" returns the
 capital, currency and language of China. Doing better means intent detection
 before entity detection, which is a larger design than this project needed. See
@@ -151,7 +147,7 @@ character by character and can contain only digits, operators and brackets, then
 evaluated with empty globals. A test asserts that the extractor cannot emit a
 name, an attribute or a call, for inputs that try.
 
-**Cost.** One flag, and one line of documentation that has to stay honest.
+**Cost.** One flag, and a line of documentation.
 
 ---
 
@@ -168,17 +164,16 @@ actions that need one become no-ops rather than errors, which is also what makes
 `--terminal` mode work.
 
 **Cost.** One indirection between an action and the window, and a protocol to
-keep in sync. Paid for by 84 tests that run in under a second with no display
-and no network.
+keep in sync. In exchange the response layer can be tested with no display and
+no network.
 
 ---
 
-## Not decided, and it shows
+## Not really decided
 
 **Tkinter.** It was the default in the course and was never weighed against
-anything. It is a defensible choice for this — no packaging step, canvas text
-over a canvas image works, ships with Python — but those are reasons found
-afterwards, not the reason it was used.
+anything. It works well enough here — ships with Python, no packaging step,
+canvas text over a canvas image — but those reasons were found afterwards.
 
 **Decoding video into memory.** Eleven clips are held as decoded Tk images, which
 is tens of megabytes of RAM and several seconds of startup. A video widget or an

@@ -1,8 +1,6 @@
 # Known issues
 
-Things that are wrong or limited and were left that way on purpose. Listed
-because a reviewer will find them in ten minutes, and because knowing where the
-edges are is part of the work.
+Things that are wrong or limited and were left that way on purpose.
 
 ---
 
@@ -17,7 +15,7 @@ Explicit intents are safe — "weather in Lisbon", "what time is it in Berlin" a
 tests keep it that way. The gap is sentences with no recognised intent at all.
 
 **Fix would be:** classify intent before extracting entities, i.e. a real NLU
-layer. Out of proportion for a bot with 25 patterns.
+layer. Out of proportion for a bot this size.
 
 ---
 
@@ -33,8 +31,7 @@ built around capture groups because there is no single literal to probe them
 with.
 
 **Fix would be:** score all matches and take the most specific, instead of
-taking the first. Would also make the order stop mattering, which is the actual
-fragility.
+taking the first. Would also make the order stop mattering.
 
 ---
 
@@ -61,16 +58,16 @@ how it was demonstrated. Resizing the window does not rescale the avatar — the
 background image keeps its decoded size and is repositioned, not redrawn.
 
 **Fix would be:** re-decode or re-scale on `<Configure>`. Rescaling every frame
-of every clip on a window drag is exactly the kind of thing that makes a demo
-stutter, so it was left alone.
+of every clip while the window is being dragged would stutter, so it was left
+alone.
 
 ---
 
 ## `--unsafe-code` is genuinely unsafe
 
 With the flag on, the `:` and `!` routes run whatever is typed, in the
-application's process, with full builtins. That is the feature, not a bug, and
-it is off by default. Do not enable it on a machine you care about or with input
+application's process, with full builtins. That is what the flag is for, and it
+is off by default. Do not enable it on a machine you care about or with input
 you did not type yourself.
 
 The arithmetic route is a different thing and is always on: expressions are
