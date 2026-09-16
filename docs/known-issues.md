@@ -84,8 +84,12 @@ called it; the dependency is gone. Input is typed.
 
 ---
 
-## No Linux verification
+## The application has only ever run on macOS
 
-Tested on macOS. `pyttsx3` on Linux needs `espeak`/`espeak-ng` installed, and
-the voice will sound different. Nobody has run it there.
+Nobody has started the window on Linux or Windows. The test suite runs on Linux
+in CI, but that covers the modules that import no GUI and no audio — not the
+application.
+
+On Linux, `pyttsx3` needs `espeak`/`espeak-ng` installed and the voice will
+sound different. Windows is untried.
 

@@ -105,7 +105,7 @@ Working and demonstrated. Not maintained as a product.
 | Avatar | 25 clips, 11 loaded at startup |
 | Tests | 84, no display and no network |
 | Lint | `ruff` clean |
-| Platform | macOS and Windows; Linux needs `espeak` for `pyttsx3` |
+| Platform | Only ever run on macOS; Linux and Windows untried |
 
 What this repository is **not**: it is not the original history. See
 [Provenance](#provenance).
